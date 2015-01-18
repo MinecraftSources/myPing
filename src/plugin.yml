@@ -1,0 +1,5 @@
+name: myPing
+author: mr_splash
+version: 0.1
+
+main: de.mr_splash.myPing.myPing

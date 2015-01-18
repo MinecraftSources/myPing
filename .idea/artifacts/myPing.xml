@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="myPing">
+    <output-path>$PROJECT_DIR$/../../Viel Zeug/PlayCade Netzwerk/bungeecord_3777/plugins</output-path>
+    <root id="archive" name="myPing.jar">
+      <element id="module-output" name="myPing" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/plugin.yml" />
+    </root>
+  </artifact>
+</component>

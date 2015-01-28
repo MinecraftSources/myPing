@@ -3,9 +3,11 @@ package de.mr_splash.myPing.Commands;
 import de.mr_splash.myPing.myPing;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.protocol.packet.Chat;
 
 public class PingCommand extends Command
 {
@@ -29,10 +31,25 @@ public class PingCommand extends Command
                 String msg = new String(plugin.prefix);
                 msg = msg.replace("%ping%", ping + "");
                 p.sendMessage(new TextComponent(msg));
+                return;
             }
             else
             {
-                p.sendMessage(new TextComponent(ChatColor.RED + "/ping"));
+                ProxiedPlayer player = ProxyServer.getInstance().getPlayer(args[0]);
+                if(player != null)
+                {
+                    int ping = player.getPing();
+                    String msg = new String(plugin.other_prefix);
+                    msg = msg.replace("%ping%", ping + "");
+                    msg = msg.replace("%player%", player.getName());
+                    p.sendMessage(new TextComponent(msg));
+                    return;
+                }
+                else
+                {
+                    p.sendMessage(new TextComponent(ChatColor.RED + "The player " + args[0] + " isn't online!"));
+                    return;
+                }
             }
         }
         else

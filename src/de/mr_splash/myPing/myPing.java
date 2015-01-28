@@ -15,6 +15,7 @@ public class myPing extends Plugin
 {
 
     public String prefix;
+    public String other_prefix;
 
     @Override
     public void onEnable()
@@ -49,7 +50,13 @@ public class myPing extends Plugin
                 configuration.set("settings.prefix", "&6Your ping: &b%ping% ms");
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
             }
+            if(configuration.get("settings.other_prefix") == null)
+            {
+                configuration.set("settings.other_prefix", "&6%player%&3 his ping is:&b %ping%");
+                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
+            }
             prefix = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.prefix"));
+            other_prefix = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.other_prefix"));
         } catch (IOException e) {
             e.printStackTrace();
         }

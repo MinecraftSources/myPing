@@ -25,6 +25,15 @@ public class PingCommand extends Command
         if(sender instanceof ProxiedPlayer)
         {
             ProxiedPlayer p = (ProxiedPlayer) sender;
+            if(plugin.use_permission)
+            {
+                if(!p.hasPermission("myping.ping"))
+                {
+                    p.sendMessage(new TextComponent(ChatColor.DARK_RED + "You don't have the permission to do this!"));
+                    return;
+                }
+            }
+
             if(args.length == 0)
             {
                 int ping = p.getPing();
@@ -47,7 +56,16 @@ public class PingCommand extends Command
                 }
                 else
                 {
-                    p.sendMessage(new TextComponent(ChatColor.RED + "The player " + args[0] + " isn't online!"));
+                    if(plugin.not_online != null)
+                    {
+                        String msg = new String(plugin.not_online);
+                        msg = msg.replace("%player%", args[0]);
+                        p.sendMessage(new TextComponent(msg));
+                    }
+                    else
+                    {
+                        p.sendMessage(new TextComponent(ChatColor.RED + "The player " + args[0] + " isn't online!"));
+                    }
                     return;
                 }
             }

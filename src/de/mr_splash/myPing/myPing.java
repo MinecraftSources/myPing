@@ -16,6 +16,8 @@ public class myPing extends Plugin
 
     public String prefix;
     public String other_prefix;
+    public String not_online;
+    public boolean use_permission;
 
     @Override
     public void onEnable()
@@ -55,8 +57,21 @@ public class myPing extends Plugin
                 configuration.set("settings.other_prefix", "&6%player%&3 his ping is:&b %ping%");
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
             }
+            if(configuration.get("settings.not_online") == null)
+            {
+                configuration.set("settings.not_online", "&cThe player %player% is not online!");
+                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
+            }
+            if(configuration.get("settings.use_permission") == null)
+            {
+                configuration.set("settings.use_permission", false);
+                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
+            }
+
             prefix = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.prefix"));
             other_prefix = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.other_prefix"));
+            not_online = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.not_online"));
+            use_permission = configuration.getBoolean("settings.use_permission");
         } catch (IOException e) {
             e.printStackTrace();
         }

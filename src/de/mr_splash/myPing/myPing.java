@@ -14,23 +14,27 @@ import java.io.IOException;
 public class myPing extends Plugin
 {
 
-    public String prefix;
-    public String other_prefix;
-    public String not_online;
-    public boolean use_permission;
 
     @Override
     public void onEnable()
     {
+        myPing = this;
         registerCommands();
         loadcfg();
+    }
+
+    public static myPing getInstance()
+    {
+        return myPing;
     }
 
 
     private void registerCommands()
     {
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new PingCommand(this));
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new PingCommand());
     }
+
+
 
     private void loadcfg()
     {
@@ -67,14 +71,77 @@ public class myPing extends Plugin
                 configuration.set("settings.use_permission", false);
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
             }
+            if(configuration.get("settings.use_cooldown") == null)
+            {
+                configuration.set("settings.use_cooldown", false);
+                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
+            }
+            if(configuration.get("settings.cooldown_message") == null)
+            {
+                configuration.set("settings.cooldown_message", "&cPlease wait %time% seconds before checking again");
+                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
+            }
+            if(configuration.get("settings.time") == null)
+            {
+                configuration.set("settings.time", 5);
+                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
+            }
 
+            cooldown_time = configuration.getInt("settings.time");
             prefix = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.prefix"));
             other_prefix = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.other_prefix"));
             not_online = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.not_online"));
+            cooldown_message = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.cooldown_message"));
             use_permission = configuration.getBoolean("settings.use_permission");
+            use_cooldown = configuration.getBoolean("settings.use_cooldown");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private String prefix;
+    private String other_prefix;
+    private String not_online;
+
+    public String getCooldown_message()
+    {
+        return cooldown_message;
+    }
+
+    public int getCooldown_time()
+    {
+        return cooldown_time;
+    }
+
+    public boolean isUse_cooldown()
+    {
+        return use_cooldown;
+    }
+
+    public boolean isUse_permission()
+    {
+        return use_permission;
+    }
+
+    public String getPrefix()
+    {
+        return prefix;
+    }
+
+    public String getOther_prefix()
+    {
+        return other_prefix;
+    }
+
+    public String getNot_online()
+    {
+        return not_online;
+    }
+
+    private String cooldown_message;
+    private int cooldown_time;
+    private boolean use_cooldown;
+    private boolean use_permission;
+    private static myPing myPing;
 
 }

@@ -55,12 +55,12 @@ public class myPing extends Plugin
             Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
             if(configuration.get("settings.prefix") == null)
             {
-                configuration.set("settings.prefix", "&6Your ping: &b%ping% ms");
+                configuration.set("settings.prefix", "&6Your ping: %pingcolor%%ping% ms");
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
             }
             if(configuration.get("settings.other_prefix") == null)
             {
-                configuration.set("settings.other_prefix", "&6%player%&3 his ping is:&b %ping%");
+                configuration.set("settings.other_prefix", "&6%player%&3 his ping is: %pingcolor%%ping%");
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
             }
             if(configuration.get("settings.not_online") == null)
@@ -88,6 +88,7 @@ public class myPing extends Plugin
                 configuration.set("settings.time", 5);
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
             }
+
 
             cooldown_time = configuration.getInt("settings.time");
             prefix = ChatColor.translateAlternateColorCodes('&', configuration.getString("settings.prefix"));

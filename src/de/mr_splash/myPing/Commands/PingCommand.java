@@ -66,18 +66,28 @@ public class PingCommand extends Command
             {
                 int ping = p.getPing();
                 String msg = plugin.getPrefix();
+				msg = msg.replace("%pingcolor%", getColorbyPing(ping) + "");
                 msg = msg.replace("%ping%", ping + "");
                 p.sendMessage(new TextComponent(msg));
                 return;
             }
             else
             {
+                if(plugin.isUse_permission())
+                {
+                    if(!p.hasPermission("myping.pingother"))
+                    {
+                        p.sendMessage(new TextComponent(ChatColor.DARK_RED + "You don't have the permission to do this!"));
+                        return;
+                    }
+                }
                 ProxiedPlayer player = ProxyServer.getInstance().getPlayer(args[0]);
                 if(player != null)
                 {
                     int ping = player.getPing();
                     String msg = plugin.getOther_prefix();
                     msg = msg.replace("%ping%", ping + "");
+					msg = msg.replace("%pingcolor%", getColorbyPing(ping) + "");
                     msg = msg.replace("%player%", player.getName());
                     p.sendMessage(new TextComponent(msg));
                     return;
@@ -103,5 +113,18 @@ public class PingCommand extends Command
             sender.sendMessage(new TextComponent("You can't do that!"));
         }
     }
+
+	private ChatColor getColorbyPing(int ping)
+	{
+		if(ping < 40)
+		{
+			return ChatColor.GREEN;
+		}
+		if(ping > 150)
+		{
+			return ChatColor.DARK_RED;
+		}
+		return ChatColor.RED;
+	}
 
 }
